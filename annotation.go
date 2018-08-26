@@ -7,15 +7,15 @@ import (
 )
 
 type Annotation struct {
-	Values map[string]string `gorm:"type:LONGTEXT"`
+	Values map[string]string `gorm:"type:LONGTEXT" json:"values"`
 }
 
 func (annotation Annotation) Scan(val interface{}) error {
 	switch val := val.(type) {
 	case string:
-		return json.Unmarshal([]byte(val), annotation)
+		return json.Unmarshal([]byte(val), &annotation)
 	case []byte:
-		return json.Unmarshal(val, annotation)
+		return json.Unmarshal(val, &annotation)
 	default:
 		return errors.New("not support")
 	}
